@@ -1,8 +1,6 @@
-import express from 'express';
+import express from 'express'
 import { graphqlHTTP } from 'express-graphql';
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLNonNull, GraphQLList } from 'graphql';
-
-const app = express();
+import { GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
 
 const authors = [
 	{ id: 1, name: 'J. K. Rowling' },
@@ -21,13 +19,14 @@ const books = [
 	{ id: 8, name: 'Beyond the Shadows', authorId: 3 }
 ]
 
+const app = express();
+
 const bookType = new GraphQLObjectType({
-    name: 'Book',
-    description: 'This represents a book written by an author',
+    name: 'book',
     fields: () => ({
-        id: { type: GraphQLNonNull(GraphQLInt) },
-        name: { type: GraphQLNonNull(GraphQLString) },
-        authorId: { type: GraphQLNonNull(GraphQLInt) }
+        id: { type: GraphQLInt },
+        name: { type: GraphQLString },
+        authorId: { type: GraphQLInt }
     })
 })
 
@@ -51,5 +50,5 @@ app.use('/graphql', graphqlHTTP({
 }))
 
 app.listen(8000, () => {
-    console.log('Server started!');
+    console.log('Server is running on port 8000');
 })
