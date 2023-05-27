@@ -21,14 +21,29 @@ const books = [
 
 const app = express();
 
+const AuthorType = new GraphQLObjectType({
+    name: "author",
+    fields: () => ({
+        id: { type: GraphQLInt },
+        name: { type: GraphQLString },
+    })
+})
+
 const bookType = new GraphQLObjectType({
     name: 'book',
     fields: () => ({
         id: { type: GraphQLInt },
         name: { type: GraphQLString },
-        authorId: { type: GraphQLInt }
+        authorId: { type: GraphQLInt },
+        authorName: {
+            type: AuthorType,
+            resolve: (book) => ({
+                name: authors.find(author => author.id === book.authorId).name
+            })
+        }
     })
 })
+
 
 const rootQueryType = new GraphQLObjectType({
     name: 'rootQuery',
